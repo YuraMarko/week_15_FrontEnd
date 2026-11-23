@@ -50,6 +50,7 @@ export default function Home() {
   const [editId, setEditId] = useState<number | null>(null);
   const [ready, setReady] = useState(false);
   const [fileKey, setFileKey] = useState(0);
+  const [notif, setNotif] = useState("");
 
   /* eslint-disable react-hooks/set-state-in-effect */
   // READ: load saved data (or seed data on first visit)
@@ -136,14 +137,22 @@ export default function Home() {
     resetForm();
   }
 
+  function showNotif(msg: string) {
+    setNotif(msg);
+    setTimeout(() => setNotif(""), 4000);
+  }
+
   // DELETE
   function remove(id: number) {
+    const target = weapons.find((w) => w.id === id);
     setWeapons(weapons.filter((w) => w.id !== id));
     if (editId === id) cancelEdit();
+    showNotif(`"${target?.name}" berhasil dihapus`);
   }
 
   return (
     <main className="container">
+      {notif && <div className="notification">{notif}</div>}
       <h1 className="title">Chinese Cold War Infantry Arms Library</h1>
       <p className="subtitle">A catalog of small arms used by Chinese infantry, 1950s–1980s.</p>
 
